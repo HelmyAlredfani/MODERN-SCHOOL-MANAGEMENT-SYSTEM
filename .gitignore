@@ -1,0 +1,6 @@
+*.log
+.env
+config.local.php
+/vendor/
+/node_modules/
+.DS_Store
