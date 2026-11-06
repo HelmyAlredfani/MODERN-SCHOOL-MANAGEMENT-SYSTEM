@@ -156,3 +156,20 @@ assert.ok(scripts[0][1].includes('function exportStudentAccount()'), 'student ac
 assert.ok(scripts[0][1].includes('function printStudentAccount()'), 'student account print view exists');
 const accountBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentAccountData(){'),scripts[0][1].indexOf('function renderStudentAccount(){'));
 assert.ok(!accountBuilder.includes('persist(')&&!accountBuilder.includes('db.'), 'student account data builder does not mutate stored records');
+
+
+assert.match(html, /id="student-report-card"/, 'student report card section exists');
+assert.match(html, /id="resultStudent"/, 'report card student selector exists');
+assert.match(html, /id="resultExam"/, 'report card exam selector exists');
+assert.match(html, /id="resultSubjectRows"/, 'report card subject details table exists');
+assert.ok(scripts[0][1].includes('function studentReportCardData()'), 'student report card data builder exists');
+assert.ok(scripts[0][1].includes("scoped('students').find(x=>x.id===studentId)"), 'report card student is restricted to active school');
+assert.ok(scripts[0][1].includes("scoped('exams').find(x=>x.id===examId)"), 'report card exam is restricted to active school');
+assert.ok(scripts[0][1].includes("scoped('grades').filter(g=>g.studentId===studentId&&g.examId===examId)"), 'report card joins grades to selected student and exam');
+assert.ok(scripts[0][1].includes('percentage>=Number(exam.passMark||0)'), 'overall result uses configured exam pass mark');
+assert.ok(scripts[0][1].includes('function exportStudentReportCard()'), 'report card CSV export exists');
+assert.ok(scripts[0][1].includes('function printStudentReportCard()'), 'report card print view exists');
+const cardBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentReportCardData(){'),scripts[0][1].indexOf('function renderStudentReportCard(){'));
+assert.ok(!cardBuilder.includes('persist(')&&!cardBuilder.includes('db.'), 'report card data builder is read-only');
+assert.ok(scripts[0][1].includes("function exportStudentReportCard()"), 'report card export remains present');
+assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'report card CSV uses UTF-8');
