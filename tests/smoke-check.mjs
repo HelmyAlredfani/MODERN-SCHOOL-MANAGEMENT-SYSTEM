@@ -106,3 +106,15 @@ assert.ok(scripts[0][1].includes("x.status==='موافق عليها'&&x.toDate>=
 assert.ok(scripts[0][1].includes('function exportStaffMonthlyReport()'), 'monthly CSV export exists');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'CSV export uses UTF-8');
 assert.ok(scripts[0][1].includes("String(new Date(year,mon,0).getDate()).padStart(2,'0')"), 'month end date avoids UTC timezone shifts');
+
+assert.match(html, /id="financeReportMonth"/, 'monthly finance report month selector exists');
+assert.match(html, /id="financeStudentRows"/, 'monthly finance student breakdown exists');
+assert.match(html, /id="financeClassRows"/, 'monthly finance class breakdown exists');
+assert.match(html, /id="financeRate"/, 'monthly fee collection ratio exists');
+assert.match(html, /id="financeOverdue"/, 'current overdue balance summary exists');
+assert.ok(scripts[0][1].includes('function financeMonthlyData()'), 'monthly finance report data builder exists');
+assert.ok(scripts[0][1].includes("scoped('fees').filter(f=>f.dueDate&&f.dueDate>=start&&f.dueDate<=end)"), 'fees are filtered by due month and active school');
+assert.ok(scripts[0][1].includes("f.dueDate&&f.dueDate<today()"), 'overdue fee balance is calculated');
+assert.ok(scripts[0][1].includes('function exportFinanceMonthlyReport()'), 'monthly finance CSV export exists');
+assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'finance CSV uses UTF-8 encoding');
+assert.ok(scripts[0][1].includes("renderFinanceMonthlyReport()"), 'finance report refreshes with report screen');
