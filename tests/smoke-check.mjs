@@ -176,11 +176,11 @@ assert.ok(!cardBuilder.includes('persist(')&&!cardBuilder.includes('db.'), 'repo
 assert.ok(scripts[0][1].includes("function exportStudentReportCard()"), 'report card export remains present');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'report card CSV uses UTF-8');
 
-assert.match(serviceWorker, /msms-github-edition-v4/, 'service worker cache version is bumped to invalidate stale site assets');
+assert.match(serviceWorker, /msms-github-edition-v5/, 'service worker cache version is bumped to invalidate stale site assets');
 assert.match(serviceWorker, /request\.mode==='navigate'\|\|url\.pathname\.endsWith\('\/index\.html'\)/, 'page navigations use a network-first strategy');
 assert.match(serviceWorker, /fetch\(request\)[\s\S]*?caches\.match\(request\)[\s\S]*?caches\.match\('\.\/index\.html'\)/, 'page navigation falls back to cached HTML when offline');
 assert.match(serviceWorker, /keys\.filter\(key=>key!==CACHE\)/, 'old service worker caches are removed on activation');
-assert.match(html, /MSMS 2\.9/, 'visible product version is updated to 2.8');
+assert.match(html, /MSMS 2\.9/, 'visible product version is updated to 2.9');
 assert.match(html, /id="academicSubjectRows"/, 'academic subject analytics table exists');
 assert.match(html, /id="academicClassRows"/, 'academic class analytics table exists');
 assert.match(html, /id="academicExamRows"/, 'academic exam analytics table exists');
@@ -240,7 +240,7 @@ assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'absence foll
 
 
 // MSMS 2.9 – academic years and student promotion history
-assert.match(html, /MSMS 2\\.9/, 'visible product version is updated to 2.9');
+assert.match(html, /MSMS 2\.9/, 'visible product version is updated to 2.9');
 assert.match(html, /id="academicYearRows"/, 'academic year registry table exists');
 assert.match(html, /id="promotionStudentRows"/, 'student promotion selection table exists');
 assert.match(html, /id="studentHistoryRows"/, 'student academic transition history table exists');
