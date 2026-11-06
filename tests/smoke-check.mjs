@@ -54,3 +54,10 @@ assert.match(scripts[0][1], /x\.classId===obj\.classId/, 'timetable prevents cla
 assert.match(scripts[0][1], /st\.classId&&!x\.classes\.some/, 'backup student class references are validated');
 assert.match(scripts[0][1], /l\.classId&&!x\.classes\.some/, 'backup lesson class references are validated');
 assert.match(scripts[0][1], /db\.lessons=db\.lessons\.map\(x=>x\.classId===recordId/, 'deleting a class clears linked timetable references');
+
+assert.match(html, /id="attendanceClassFilter"/, 'attendance can be filtered by class');
+assert.match(html, /id="attendanceRosterCount"/, 'filtered attendance roster count exists');
+assert.match(html, /id="reportClassAttendanceRows"/, 'class attendance report table exists');
+assert.match(scripts[0][1], /function renderAttendance\(\)[\s\S]*?st\.classId===filter\.value/, 'attendance renderer filters students by selected class');
+assert.match(scripts[0][1], /function renderReports\(\)[\s\S]*?const classGroups=new Map\(\)/, 'reports aggregate attendance by class');
+assert.match(scripts[0][1], /g\.present\+g\.late/, 'attendance rate includes present and late statuses');
