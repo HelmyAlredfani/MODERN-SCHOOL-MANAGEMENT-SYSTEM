@@ -103,7 +103,8 @@ assert.match(html, /id="monthlyTeacherLoadRows"/, 'monthly teacher workload tabl
 assert.match(html, /id="staffReportLeaveDays"/, 'approved leave day summary exists');
 assert.ok(scripts[0][1].includes('function staffMonthlyData()'), 'monthly HR report data builder exists');
 assert.ok(scripts[0][1].includes("scoped('staffAttendance').filter(x=>x.date>=start&&x.date<=end)"), 'staff attendance is scoped to selected month and school');
-assert.ok(scripts[0][1].includes("x.status==='موافق عليها'&&x.toDate>=start&&x.fromDate<=end"), 'approved leave overlapping selected month is included');
+assert.ok(scripts[0][1].includes("requests=scoped('leaves').filter(x=>x.fromDate<=end&&x.toDate>=start)"), 'all leave requests overlapping selected month are included for status reporting');
+assert.ok(scripts[0][1].includes("ownRequests.filter(x=>x.status==='موافق عليها')"), 'approved leave days are calculated only from approved requests');
 assert.ok(scripts[0][1].includes('function exportStaffMonthlyReport()'), 'monthly CSV export exists');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'CSV export uses UTF-8');
 assert.ok(scripts[0][1].includes("String(new Date(year,mon,0).getDate()).padStart(2,'0')"), 'month end date avoids UTC timezone shifts');
@@ -190,3 +191,16 @@ assert.ok(scripts[0][1].includes("grades.filter(g=>studentMap.has(g.studentId)&&
 assert.ok(scripts[0][1].includes("inRange({date:examMap.get(g.examId).date||''})"), 'academic analytics respects the selected exam date range');
 const academicBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function academicPerformanceData(){'),scripts[0][1].indexOf('function renderAcademicPerformance(){'));
 assert.ok(!academicBuilder.includes('persist(')&&!academicBuilder.includes('db.'), 'academic analytics builder is read-only');
+
+assert.match(html, /MSMS 2\.6/, 'visible product version is updated to 2.6');
+assert.match(html, /id="staffReportApprovedRequests"/, 'monthly approved leave request KPI exists');
+assert.match(html, /id="staffReportPendingRequests"/, 'monthly pending leave request KPI exists');
+assert.match(html, /id="staffReportRejectedRequests"/, 'monthly rejected leave request KPI exists');
+assert.ok(scripts[0][1].includes("function staffMonthlyData()"), 'staff monthly report data builder exists');
+assert.ok(scripts[0][1].includes("x.fromDate<=end&&x.toDate>=start"), 'staff leave requests are selected when they overlap the report month');
+assert.ok(scripts[0][1].includes("requestCount('قيد المراجعة')"), 'staff report counts pending leave requests');
+assert.ok(scripts[0][1].includes("requestCount('مرفوضة')"), 'staff report counts rejected leave requests');
+assert.ok(scripts[0][1].includes("approvedLeaveDays"), 'staff report calculates approved leave days within the selected month');
+const staffBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function staffMonthlyData(){'),scripts[0][1].indexOf('function renderStaffMonthlyReport(){'));
+assert.ok(!staffBuilder.includes('persist(')&&!staffBuilder.includes('db.'), 'staff monthly report builder is read-only and scoped');
+assert.ok(scripts[0][1].includes("function exportStaffMonthlyReport()"), 'staff monthly CSV export remains available');
