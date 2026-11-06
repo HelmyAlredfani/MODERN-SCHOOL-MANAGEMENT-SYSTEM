@@ -176,11 +176,11 @@ assert.ok(!cardBuilder.includes('persist(')&&!cardBuilder.includes('db.'), 'repo
 assert.ok(scripts[0][1].includes("function exportStudentReportCard()"), 'report card export remains present');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'report card CSV uses UTF-8');
 
-assert.match(serviceWorker, /msms-github-edition-v5/, 'service worker cache version is bumped to invalidate stale site assets');
+assert.match(serviceWorker, /msms-github-edition-v6/, 'service worker cache version is bumped to invalidate stale site assets');
 assert.match(serviceWorker, /request\.mode==='navigate'\|\|url\.pathname\.endsWith\('\/index\.html'\)/, 'page navigations use a network-first strategy');
 assert.match(serviceWorker, /fetch\(request\)[\s\S]*?caches\.match\(request\)[\s\S]*?caches\.match\('\.\/index\.html'\)/, 'page navigation falls back to cached HTML when offline');
 assert.match(serviceWorker, /keys\.filter\(key=>key!==CACHE\)/, 'old service worker caches are removed on activation');
-assert.match(html, /MSMS 2\.9/, 'visible product version is updated to 2.9');
+assert.match(html, /MSMS 3\.0/, 'visible product version is updated to 2.9');
 assert.match(html, /id="academicSubjectRows"/, 'academic subject analytics table exists');
 assert.match(html, /id="academicClassRows"/, 'academic class analytics table exists');
 assert.match(html, /id="academicExamRows"/, 'academic exam analytics table exists');
@@ -192,7 +192,7 @@ assert.ok(scripts[0][1].includes("inRange({date:examMap.get(g.examId).date||''})
 const academicBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function academicPerformanceData(){'),scripts[0][1].indexOf('function renderAcademicPerformance(){'));
 assert.ok(!academicBuilder.includes('persist(')&&!academicBuilder.includes('db.'), 'academic analytics builder is read-only');
 
-assert.match(html, /MSMS 2\.9/, 'visible product version is updated to 2.8');
+assert.match(html, /MSMS 3\.0/, 'visible product version is updated to 2.8');
 assert.match(html, /id="staffReportApprovedRequests"/, 'monthly approved leave request KPI exists');
 assert.match(html, /id="staffReportPendingRequests"/, 'monthly pending leave request KPI exists');
 assert.match(html, /id="staffReportRejectedRequests"/, 'monthly rejected leave request KPI exists');
@@ -207,7 +207,7 @@ assert.ok(scripts[0][1].includes("function exportStaffMonthlyReport()"), 'staff 
 
 
 // MSMS 2.7 – student attendance analytics
-assert.match(html, /MSMS 2\.9/, 'visible product version is updated to 2.8');
+assert.match(html, /MSMS 3\.0/, 'visible product version is updated to 2.8');
 assert.match(html, /id="attendanceAnalyticsClassRows"/, 'class and section attendance comparison exists');
 assert.match(html, /id="studentAttendanceDetailRows"/, 'individual student attendance detail exists');
 assert.match(html, /id="attendanceStudentFilter"/, 'student attendance selector exists');
@@ -224,7 +224,7 @@ assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'student atte
 
 
 // MSMS 2.8 – student absence follow-up
-assert.match(html, /MSMS 2\.9/, 'visible product version is updated to 2.8');
+assert.match(html, /MSMS 3\.0/, 'visible product version is updated to 2.8');
 assert.match(html, /id="absenceFollowupRows"/, 'student absence follow-up register exists');
 assert.match(html, /id="absenceFollowupThreshold"/, 'absence follow-up threshold control exists');
 assert.ok(scripts[0][1].includes('function studentAbsenceFollowupData()'), 'student absence follow-up data builder exists');
@@ -240,7 +240,7 @@ assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'absence foll
 
 
 // MSMS 2.9 – academic years and student promotion history
-assert.match(html, /MSMS 2\.9/, 'visible product version is updated to 2.9');
+assert.match(html, /MSMS 3\.0/, 'visible product version is updated to 2.9');
 assert.match(html, /id="academicYearRows"/, 'academic year registry table exists');
 assert.match(html, /id="promotionStudentRows"/, 'student promotion selection table exists');
 assert.match(html, /id="studentHistoryRows"/, 'student academic transition history table exists');
@@ -256,3 +256,20 @@ assert.ok(scripts[0][1].includes("db.studentHistory.unshift("), 'promotion appen
 assert.ok(scripts[0][1].includes("x.studentHistory=Array.isArray(x.studentHistory)?x.studentHistory:[];x.academicYears=Array.isArray(x.academicYears)?x.academicYears:[];"), 'legacy backups receive empty academic year/history collections');
 assert.ok(scripts[0][1].includes("!x.students.some(st=>st.id===h.studentId&&st.schoolId===h.schoolId)"), 'backup import validates history-to-student school relationships');
 assert.ok(scripts[0][1].includes("db.studentHistory=db.studentHistory.filter(x=>x.studentId!==recordId)"), 'deleting a student cleans up dependent transition history');
+
+
+// MSMS 3.0 – admissions and enrollment
+assert.match(html, /MSMS 3\\.0/, 'visible product version is updated to 3.0');
+assert.match(html, /data-page="admissions"/, 'admissions navigation entry exists');
+assert.match(html, /id="admissionForm"/, 'admission application form exists');
+assert.match(html, /id="admissionRows"/, 'admissions register exists');
+assert.ok(scripts[0][1].includes('admissions:[]'), 'admissions collection is included in local data model');
+assert.ok(scripts[0][1].includes('function submitAdmission(event)'), 'admission submission handler exists');
+assert.ok(scripts[0][1].includes('function updateAdmissionStatus(admissionId,status)'), 'admission review status workflow exists');
+assert.ok(scripts[0][1].includes('function enrollAdmission(admissionId)'), 'accepted admission enrollment conversion exists');
+assert.ok(scripts[0][1].includes("record.status!=='مقبول'||record.studentId"), 'only accepted, not-yet-converted applications may enroll');
+assert.ok(scripts[0][1].includes("admissionId:record.id"), 'enrolled student retains source application link');
+assert.ok(scripts[0][1].includes("guardian.phone===record.guardianPhone"), 'enrollment reuses matching guardian contact where available');
+assert.ok(scripts[0][1].includes("x.admissions=Array.isArray(x.admissions)?x.admissions:[];"), 'legacy backups gain an empty admissions collection');
+assert.ok(scripts[0][1].includes("a.studentId&&!x.students.some(st=>st.id===a.studentId&&st.schoolId===a.schoolId)"), 'backup import validates admission-to-student school links');
+assert.ok(scripts[0][1].includes("function printAdmission(admissionId)"), 'admission application print view exists');
