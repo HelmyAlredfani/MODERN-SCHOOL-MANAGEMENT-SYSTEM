@@ -20,9 +20,9 @@ assert.match(scripts[0][1], /db\.attendance=db\.attendance\.filter\(x=>x\.studen
 assert.match(scripts[0][1], /db\.grades=db\.grades\.filter\(x=>x\.studentId!==recordId\)/, 'student deletion removes related grades');
 assert.match(scripts[0][1], /l\.teacherId&&!x\.teachers\.some/, 'backup teacher references are validated');
 assert.match(html, /لا تدخل بيانات شخصية حقيقية للطلاب/, 'privacy warning exists');
-assert.match(scripts[0][1], /function renderFees\\(/, 'fee summary renderer exists');
-assert.match(scripts[0][1], /x\\.examId===data\\.examId/, 'duplicate exam-subject grades are rejected');
-assert.match(scripts[0][1], /data\\.paid>data\\.amount/, 'payments cannot exceed assessed fees');
-assert.match(scripts[0][1], /examIds\\.has\\(g\\.examId\\)/, 'backup exam references are validated');
+assert.match(scripts[0][1], /function renderFees\(/, 'fee summary renderer exists');
+assert.match(scripts[0][1], /x\.examId===data\.examId/, 'duplicate exam-subject grades are rejected');
+assert.match(scripts[0][1], /data\.paid>data\.amount/, 'payments cannot exceed assessed fees');
+assert.match(scripts[0][1], /examIds\.has\(g\.examId\)/, 'backup exam references are validated');
 assert.match(scripts[0][1], /x\\.fees\.some/, 'backup fee amounts are validated');
 console.log('MSMS smoke checks passed.');
