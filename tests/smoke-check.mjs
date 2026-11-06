@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');\nconst serviceWorker = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const serviceWorker = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 assert.match(html, /<html lang="ar" dir="rtl">/, 'Arabic RTL document');
 assert.match(html, /id="schoolSelect"/, 'school selector exists');
 for (const id of ['dashboard','schools','students','teachers','classes','attendance','grades','exams','fees','guardians','timetable','reports','settings']) {
