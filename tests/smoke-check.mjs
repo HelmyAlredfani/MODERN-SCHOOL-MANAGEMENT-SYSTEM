@@ -191,7 +191,7 @@ assert.ok(scripts[0][1].includes("inRange({date:examMap.get(g.examId).date||''})
 const academicBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function academicPerformanceData(){'),scripts[0][1].indexOf('function renderAcademicPerformance(){'));
 assert.ok(!academicBuilder.includes('persist(')&&!academicBuilder.includes('db.'), 'academic analytics builder is read-only');
 
-assert.match(html, /MSMS 2\\.6/, 'visible product version is updated to 2.6');
+assert.match(html, /MSMS 2\.6/, 'visible product version is updated to 2.6');
 assert.match(html, /id="staffReportApprovedRequests"/, 'monthly approved leave request KPI exists');
 assert.match(html, /id="staffReportPendingRequests"/, 'monthly pending leave request KPI exists');
 assert.match(html, /id="staffReportRejectedRequests"/, 'monthly rejected leave request KPI exists');
