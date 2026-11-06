@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS academic_years (
     is_current TINYINT(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     UNIQUE KEY uq_school_year_name (school_id, year_name),
+    UNIQUE KEY uq_academic_year_school_id (school_id, id),
     KEY idx_academic_year_current (school_id, is_current),
     CONSTRAINT fk_academic_year_school FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -116,6 +117,7 @@ CREATE TABLE IF NOT EXISTS students (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uq_student_admission (school_id, admission_no),
+    UNIQUE KEY uq_student_school_id (school_id, id),
     KEY idx_student_name (school_id, full_name),
     KEY idx_student_status (school_id, status),
     CONSTRAINT fk_student_school FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE CASCADE
@@ -143,7 +145,7 @@ CREATE TABLE IF NOT EXISTS sections (
     UNIQUE KEY uq_section (school_id, classroom_id, section_name, academic_year_id),
     UNIQUE KEY uq_section_school_id (school_id, id),
     CONSTRAINT fk_section_class FOREIGN KEY (school_id, classroom_id) REFERENCES classrooms(school_id, id) ON DELETE CASCADE,
-    CONSTRAINT fk_section_year FOREIGN KEY (academic_year_id) REFERENCES academic_years(id) ON DELETE SET NULL,
+    CONSTRAINT fk_section_year FOREIGN KEY (school_id, academic_year_id) REFERENCES academic_years(school_id, id) ON DELETE RESTRICT,
     CONSTRAINT fk_section_school FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -160,7 +162,7 @@ CREATE TABLE IF NOT EXISTS student_enrollments (
     KEY idx_enrollment_section (school_id, section_id, academic_year_id),
     CONSTRAINT fk_enrollment_student FOREIGN KEY (school_id, student_id) REFERENCES students(school_id, id) ON DELETE CASCADE,
     CONSTRAINT fk_enrollment_section FOREIGN KEY (school_id, section_id) REFERENCES sections(school_id, id) ON DELETE RESTRICT,
-    CONSTRAINT fk_enrollment_year FOREIGN KEY (academic_year_id) REFERENCES academic_years(id) ON DELETE RESTRICT
+    CONSTRAINT fk_enrollment_year FOREIGN KEY (school_id, academic_year_id) REFERENCES academic_years(school_id, id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS audit_logs (
