@@ -24,5 +24,7 @@ assert.match(scripts[0][1], /function renderFees\(/, 'fee summary renderer exist
 assert.match(scripts[0][1], /x\.examId===data\.examId/, 'duplicate exam-subject grades are rejected');
 assert.match(scripts[0][1], /data\.paid>data\.amount/, 'payments cannot exceed assessed fees');
 assert.match(scripts[0][1], /examIds\.has\(g\.examId\)/, 'backup exam references are validated');
+assert.match(scripts[0][1], /x\.exams=Array\.isArray\(x\.exams\)\?x\.exams:\[\]/, 'legacy backups gain empty exam and fee collections');
+assert.match(scripts[0][1], /db\.grades=db\.grades\.filter\(x=>x\.examId!==recordId\)/, 'deleting an exam removes linked grades');
 assert.match(scripts[0][1], /x\\.fees\.some/, 'backup fee amounts are validated');
 console.log('MSMS smoke checks passed.');
