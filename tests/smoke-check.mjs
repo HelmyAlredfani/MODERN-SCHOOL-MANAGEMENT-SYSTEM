@@ -154,4 +154,5 @@ assert.ok(scripts[0][1].includes("const billed=fees.reduce"), 'student account c
 assert.ok(scripts[0][1].includes("const receipts=payments.reduce"), 'student account calculates receipt total');
 assert.ok(scripts[0][1].includes('function exportStudentAccount()'), 'student account CSV export exists');
 assert.ok(scripts[0][1].includes('function printStudentAccount()'), 'student account print view exists');
-const accountBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentAccountData(){'),scripts[0][1].indexOf('function renderStudentAccount(){'));\nassert.doesNotMatch(accountBuilder, /\\b(?:db|persist)\\s*(?:\\.|=)/, 'student account data builder does not mutate stored records');
+const accountBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentAccountData(){'),scripts[0][1].indexOf('function renderStudentAccount(){'));
+assert.doesNotMatch(accountBuilder, /\\b(?:db|persist)\\s*(?:\\.|=)/, 'student account data builder does not mutate stored records');
