@@ -269,7 +269,7 @@ assert.ok(scripts[0][1].includes('function updateAdmissionStatus(admissionId,sta
 assert.ok(scripts[0][1].includes('function enrollAdmission(admissionId)'), 'accepted admission enrollment conversion exists');
 assert.ok(scripts[0][1].includes("record.status!=='مقبول'||record.studentId"), 'only accepted, not-yet-converted applications may enroll');
 assert.ok(scripts[0][1].includes("admissionId:record.id"), 'enrolled student retains source application link');
-assert.ok(scripts[0][1].includes("guardian.phone===record.guardianPhone"), 'enrollment reuses matching guardian contact where available');
+assert.ok(scripts[0][1].includes("g.phone===record.guardianPhone"), 'enrollment reuses matching guardian contact where available');
 assert.ok(scripts[0][1].includes("x.admissions=Array.isArray(x.admissions)?x.admissions:[];"), 'legacy backups gain an empty admissions collection');
 assert.ok(scripts[0][1].includes("a.studentId&&!x.students.some(st=>st.id===a.studentId&&st.schoolId===a.schoolId)"), 'backup import validates admission-to-student school links');
 assert.ok(scripts[0][1].includes("function printAdmission(admissionId)"), 'admission application print view exists');
