@@ -204,3 +204,20 @@ assert.ok(scripts[0][1].includes("approvedLeaveDays"), 'staff report calculates 
 const staffBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function staffMonthlyData(){'),scripts[0][1].indexOf('function renderStaffMonthlyReport(){'));
 assert.ok(!staffBuilder.includes('persist(')&&!staffBuilder.includes('db.'), 'staff monthly report builder is read-only and scoped');
 assert.ok(scripts[0][1].includes("function exportStaffMonthlyReport()"), 'staff monthly CSV export remains available');
+
+
+// MSMS 2.7 – student attendance analytics
+assert.match(html, /MSMS 2\\.7/, 'visible product version is updated to 2.7');
+assert.match(html, /id="attendanceAnalyticsClassRows"/, 'class and section attendance comparison exists');
+assert.match(html, /id="studentAttendanceDetailRows"/, 'individual student attendance detail exists');
+assert.match(html, /id="attendanceStudentFilter"/, 'student attendance selector exists');
+assert.ok(scripts[0][1].includes('function studentAttendanceAnalyticsData()'), 'student attendance analytics builder exists');
+assert.ok(scripts[0][1].includes('function renderStudentAttendanceAnalytics()'), 'student attendance analytics renderer exists');
+assert.ok(scripts[0][1].includes('function exportStudentAttendanceAnalytics()'), 'student attendance analytics CSV export exists');
+assert.ok(scripts[0][1].includes("scoped('attendance').filter(x=>studentMap.has(x.studentId)"), 'attendance analytics is restricted to active-school students');
+assert.ok(scripts[0][1].includes("(!from||x.date>=from)&&(!to||x.date<=to)"), 'attendance analytics respects report date range');
+assert.ok(scripts[0][1].includes('observed=present+absent+late'), 'excused records are excluded from attendance-rate denominator');
+assert.ok(scripts[0][1].includes('attendanceRate:observed?(present+late)/observed*100:0'), 'attendance rate counts present and late as attended observations');
+const attendanceBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentAttendanceAnalyticsData(){'),scripts[0][1].indexOf('function renderStudentAttendanceAnalytics(){'));
+assert.ok(!attendanceBuilder.includes('persist(')&&!attendanceBuilder.includes('db.'), 'student attendance analytics builder is read-only and uses active-school scope');
+assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'student attendance CSV uses UTF-8');
