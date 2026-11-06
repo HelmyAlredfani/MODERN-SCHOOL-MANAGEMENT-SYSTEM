@@ -179,7 +179,7 @@ assert.match(serviceWorker, /msms-github-edition-v2/, 'service worker cache vers
 assert.match(serviceWorker, /request\.mode==='navigate'\|\|url\.pathname\.endsWith\('\/index\.html'\)/, 'page navigations use a network-first strategy');
 assert.match(serviceWorker, /fetch\(request\)[\s\S]*?caches\.match\(request\)[\s\S]*?caches\.match\('\.\/index\.html'\)/, 'page navigation falls back to cached HTML when offline');
 assert.match(serviceWorker, /keys\.filter\(key=>key!==CACHE\)/, 'old service worker caches are removed on activation');
-assert.match(html, /MSMS 2\\.5/, 'visible product version is updated to 2.5');
+assert.match(html, /MSMS 2\.5/, 'visible product version is updated to 2.5');
 assert.match(html, /id="academicSubjectRows"/, 'academic subject analytics table exists');
 assert.match(html, /id="academicClassRows"/, 'academic class analytics table exists');
 assert.match(html, /id="academicExamRows"/, 'academic exam analytics table exists');
