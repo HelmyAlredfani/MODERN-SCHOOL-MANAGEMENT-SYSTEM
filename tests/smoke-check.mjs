@@ -5,7 +5,7 @@ import vm from 'node:vm';
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 assert.match(html, /<html lang="ar" dir="rtl">/, 'Arabic RTL document');
 assert.match(html, /id="schoolSelect"/, 'school selector exists');
-for (const id of ['dashboard','schools','students','teachers','classes','attendance','grades','exams','fees','timetable','reports','settings']) {
+for (const id of ['dashboard','schools','students','teachers','classes','attendance','grades','exams','fees','guardians','timetable','reports','settings']) {
   assert.match(html, new RegExp('id="' + id + '"'), 'section ' + id + ' exists');
 }
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
@@ -31,3 +31,10 @@ assert.match(scripts[0][1], /x\.exams=Array\.isArray\(x\.exams\)\?x\.exams:\[\]/
 assert.match(scripts[0][1], /db\.grades=db\.grades\.filter\(x=>x\.examId!==recordId\)/, 'deleting an exam removes linked grades');
 assert.match(scripts[0][1], /x\.fees\.some/, 'backup fee amounts are validated');
 console.log('MSMS smoke checks passed.');
+
+assert.match(html, /id="guardianRows"/, 'guardian directory exists');
+assert.match(scripts[0][1], /function renderGuardians\(/, 'guardian renderer exists');
+assert.match(scripts[0][1], /guardianId,'ولي الأمر','guardian'/, 'students can be linked to a guardian');
+assert.match(scripts[0][1], /x\.guardians=Array\.isArray\(x\.guardians\)\?x\.guardians:\[\]/, 'legacy backups gain empty guardian collection');
+assert.match(scripts[0][1], /st\.guardianId&&!x\.guardians\.some/, 'backup guardian links are validated');
+assert.match(scripts[0][1], /x\.guardianId===recordId/, 'deleting a guardian clears student links');
