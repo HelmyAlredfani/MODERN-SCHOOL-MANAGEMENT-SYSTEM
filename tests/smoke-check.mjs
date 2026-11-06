@@ -38,3 +38,10 @@ assert.match(scripts[0][1], /guardianId','ولي الأمر','guardian'/, 'stude
 assert.match(scripts[0][1], /x\.guardians=Array\.isArray\(x\.guardians\)\?x\.guardians:\[\]/, 'legacy backups gain empty guardian collection');
 assert.match(scripts[0][1], /st\.guardianId&&!x\.guardians\.some/, 'backup guardian links are validated');
 assert.match(scripts[0][1], /x\.guardianId===recordId/, 'deleting a guardian clears student links');
+
+assert.match(html, /id="reportAttendanceRows"/, 'detailed attendance report table exists');
+assert.match(html, /id="reportExamRows"/, 'exam outcomes report table exists');
+assert.match(html, /id="reportFeeRows"/, 'student fee report table exists');
+assert.match(scripts[0][1], /function renderReports\(/, 'detailed reports renderer exists');
+assert.match(scripts[0][1], /reportFrom/, 'reports support a date range');
+assert.match(scripts[0][1], /reportFeesDue/, 'reports calculate outstanding fees');
