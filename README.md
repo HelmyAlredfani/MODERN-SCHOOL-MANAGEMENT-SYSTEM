@@ -29,3 +29,15 @@
 
 ## الترخيص
 لم يُعتمد نص ترخيص نهائي في هذه النسخة. يجب إضافة ملف ترخيص كامل ومراجعته قبل إعلان إصدار عام مرخّص.
+
+## مسار MSMS 1.0 متعدد المدارس
+
+بدأ إعداد البنية الخلفية على الفرع `msms-1.0-foundation` دون تغيير النسخة المنشورة من `main`.
+
+- مخطط قاعدة البيانات الأولي: [backend/database/schema.sql](backend/database/schema.sql)
+- اتصال PHP عبر PDO: [backend/src/Database.php](backend/src/Database.php)
+- نقطة فحص الاتصال: [backend/public/api/health.php](backend/public/api/health.php)
+- دليل إعداد الخادم: [backend/README.md](backend/README.md)
+- المعمارية وخطة التنفيذ: [docs/architecture-msms-1.0.md](docs/architecture-msms-1.0.md)
+
+هذه الملفات تأسيسية فقط. لا تستخدم بيانات طلاب حقيقية قبل استكمال المصادقة والصلاحيات وعزل المدارس واختبارها على استضافة PHP/MySQL فعلية.
