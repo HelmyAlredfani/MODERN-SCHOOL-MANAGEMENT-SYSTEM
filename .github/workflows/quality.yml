@@ -1,0 +1,27 @@
+name: MSMS Quality Checks
+
+on:
+  push:
+    branches:
+      - main
+      - msms-1.0-foundation
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run MSMS smoke checks
+        run: node tests/smoke-check.mjs
