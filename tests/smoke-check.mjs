@@ -21,6 +21,9 @@ assert.match(scripts[0][1], /db\.grades=db\.grades\.filter\(x=>x\.studentId!==re
 assert.match(scripts[0][1], /l\.teacherId&&!x\.teachers\.some/, 'backup teacher references are validated');
 assert.match(html, /لا تدخل بيانات شخصية حقيقية للطلاب/, 'privacy warning exists');
 assert.match(scripts[0][1], /function renderFees\(/, 'fee summary renderer exists');
+assert.match(scripts[0][1], /function renderExamResults\(/, 'exam result summary renderer exists');
+assert.match(scripts[0][1], /pct>=Number\(exam\.passMark\)/, 'exam result status uses the configured pass threshold');
+assert.match(html, /id="examResultsRows"/, 'exam results table exists');
 assert.match(scripts[0][1], /x\.examId===data\.examId/, 'duplicate exam-subject grades are rejected');
 assert.match(scripts[0][1], /data\.paid>data\.amount/, 'payments cannot exceed assessed fees');
 assert.match(scripts[0][1], /examIds\.has\(g\.examId\)/, 'backup exam references are validated');
