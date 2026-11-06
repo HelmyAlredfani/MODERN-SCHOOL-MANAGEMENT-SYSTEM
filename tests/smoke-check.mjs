@@ -34,7 +34,7 @@ console.log('MSMS smoke checks passed.');
 
 assert.match(html, /id="guardianRows"/, 'guardian directory exists');
 assert.match(scripts[0][1], /function renderGuardians\(/, 'guardian renderer exists');
-assert.match(scripts[0][1], /guardianId,'ولي الأمر','guardian'/, 'students can be linked to a guardian');
+assert.match(scripts[0][1], /guardianId','ولي الأمر','guardian'/, 'students can be linked to a guardian');
 assert.match(scripts[0][1], /x\.guardians=Array\.isArray\(x\.guardians\)\?x\.guardians:\[\]/, 'legacy backups gain empty guardian collection');
 assert.match(scripts[0][1], /st\.guardianId&&!x\.guardians\.some/, 'backup guardian links are validated');
 assert.match(scripts[0][1], /x\.guardianId===recordId/, 'deleting a guardian clears student links');
