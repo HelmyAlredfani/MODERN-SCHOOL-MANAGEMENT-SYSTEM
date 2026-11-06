@@ -67,3 +67,19 @@ assert.match(html, /id="timetableClassFilter"/, 'weekly timetable can be filtere
 assert.match(scripts[0][1], /function renderWeeklyTimetable\(/, 'weekly timetable renderer exists');
 assert.match(scripts[0][1], /days=\['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'\]/, 'weekly timetable includes the school week');
 assert.match(scripts[0][1], /lessons\.filter\(l=>l\.day===day&&String\(l\.period\)===p\)/, 'weekly timetable groups lessons by day and period');
+
+for (const id of ['staff','leaves']) assert.match(html, new RegExp('id="' + id + '"'), id + ' section exists');
+assert.match(html, /id="staffRows"/, 'employee directory table exists');
+assert.match(html, /id="leaveRows"/, 'leave requests table exists');
+assert.match(html, /id="teacherLoadRows"/, 'teacher workload table exists');
+assert.match(scripts[0][1], /staff:\{title:'الملف الوظيفي للموظف'/, 'employee profile form exists');
+assert.match(scripts[0][1], /leave:\{title:'طلب إجازة أو استئذان'/, 'leave request form exists');
+assert.match(scripts[0][1], /function renderStaff\(/, 'employee directory renderer exists');
+assert.match(scripts[0][1], /function renderLeaves\(/, 'leave list renderer exists');
+assert.match(scripts[0][1], /function renderTeachers\([\s\S]*?teacherLoadRows/, 'teacher workload is calculated from timetable lessons');
+assert.match(scripts[0][1], /data\.toDate<data\.fromDate/, 'leave date range is validated');
+assert.ok(scripts[0][1].includes('data.fromDate<=x.toDate&&x.fromDate<=data.toDate'), 'overlapping approved leave requests are rejected');
+assert.match(scripts[0][1], /db\.leaves=db\.leaves\.filter\(x=>x\.staffId!==recordId\)/, 'employee deletion clears linked leave requests');
+assert.match(scripts[0][1], /x\.staff=Array\.isArray\(x\.staff\)\?x\.staff:\[\]/, 'legacy browser data gains employee collection');
+assert.match(scripts[0][1], /x\.leaves=Array\.isArray\(x\.leaves\)\?x\.leaves:\[\]/, 'legacy browser data gains leave collection');
+assert.match(scripts[0][1], /const staffIds=new Set\(x\.staff\.map\(s=>s\.id\)\)/, 'backup leave employee references are validated');
