@@ -179,3 +179,14 @@ assert.match(serviceWorker, /msms-github-edition-v2/, 'service worker cache vers
 assert.match(serviceWorker, /request\.mode==='navigate'\|\|url\.pathname\.endsWith\('\/index\.html'\)/, 'page navigations use a network-first strategy');
 assert.match(serviceWorker, /fetch\(request\)[\s\S]*?caches\.match\(request\)[\s\S]*?caches\.match\('\.\/index\.html'\)/, 'page navigation falls back to cached HTML when offline');
 assert.match(serviceWorker, /keys\.filter\(key=>key!==CACHE\)/, 'old service worker caches are removed on activation');
+assert.match(html, /MSMS 2\.5/, 'visible product version is updated to 2.5');
+assert.match(html, /id="academicSubjectRows"/, 'academic subject analytics table exists');
+assert.match(html, /id="academicClassRows"/, 'academic class analytics table exists');
+assert.match(html, /id="academicExamRows"/, 'academic exam analytics table exists');
+assert.ok(scripts[0][1].includes('function academicPerformanceData()'), 'academic performance data builder exists');
+assert.ok(scripts[0][1].includes('function renderAcademicPerformance()'), 'academic performance renderer exists');
+assert.ok(scripts[0][1].includes('function exportAcademicPerformance()'), 'academic performance CSV export exists');
+assert.ok(scripts[0][1].includes("grades.filter(g=>studentMap.has(g.studentId)&&examMap.has(g.examId)"), 'academic analytics is scoped to active-school students and exams');
+assert.ok(scripts[0][1].includes("inRange({date:examMap.get(g.examId).date||''})"), 'academic analytics respects the selected exam date range');
+const academicBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function academicPerformanceData(){'),scripts[0][1].indexOf('function renderAcademicPerformance(){'));
+assert.ok(!academicBuilder.includes('persist(')&&!academicBuilder.includes('db.'), 'academic analytics builder is read-only');
