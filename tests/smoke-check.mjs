@@ -45,3 +45,12 @@ assert.match(html, /id="reportFeeRows"/, 'student fee report table exists');
 assert.match(scripts[0][1], /function renderReports\(/, 'detailed reports renderer exists');
 assert.match(scripts[0][1], /reportFrom/, 'reports support a date range');
 assert.match(scripts[0][1], /reportFeesDue/, 'reports calculate outstanding fees');
+
+assert.match(scripts[0][1], /classId','الفصل الدراسي','class'/, 'students can be assigned to a school class');
+assert.match(scripts[0][1], /function classLabel\(/, 'class names are resolved for student and timetable lists');
+assert.match(scripts[0][1], /optionsFor\(type\).*type==='class'/, 'class selectors use the active school classes');
+assert.match(scripts[0][1], /x\.teacherId===obj\.teacherId/, 'timetable prevents teacher period conflicts');
+assert.match(scripts[0][1], /x\.classId===obj\.classId/, 'timetable prevents class period conflicts');
+assert.match(scripts[0][1], /st\.classId&&!x\.classes\.some/, 'backup student class references are validated');
+assert.match(scripts[0][1], /l\.classId&&!x\.classes\.some/, 'backup lesson class references are validated');
+assert.match(scripts[0][1], /db\.lessons=db\.lessons\.map\(x=>x\.classId===recordId/, 'deleting a class clears linked timetable references');
