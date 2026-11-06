@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const serviceWorker = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 assert.match(html, /<html lang="ar" dir="rtl">/, 'Arabic RTL document');
 assert.match(html, /id="schoolSelect"/, 'school selector exists');
 for (const id of ['dashboard','schools','students','teachers','classes','attendance','grades','exams','fees','guardians','timetable','reports','settings']) {
@@ -173,3 +174,8 @@ const cardBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentRep
 assert.ok(!cardBuilder.includes('persist(')&&!cardBuilder.includes('db.'), 'report card data builder is read-only');
 assert.ok(scripts[0][1].includes("function exportStudentReportCard()"), 'report card export remains present');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'report card CSV uses UTF-8');
+
+assert.match(serviceWorker, /msms-github-edition-v2/, 'service worker cache version is bumped to invalidate stale site assets');
+assert.match(serviceWorker, /request\.mode==='navigate'\|\|url\.pathname\.endsWith\('\/index\.html'\)/, 'page navigations use a network-first strategy');
+assert.match(serviceWorker, /fetch\(request\)[\s\S]*?caches\.match\(request\)[\s\S]*?caches\.match\('\.\/index\.html'\)/, 'page navigation falls back to cached HTML when offline');
+assert.match(serviceWorker, /keys\.filter\(key=>key!==CACHE\)/, 'old service worker caches are removed on activation');
