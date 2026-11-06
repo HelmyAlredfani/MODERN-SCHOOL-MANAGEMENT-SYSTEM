@@ -78,7 +78,7 @@ assert.match(scripts[0][1], /function renderStaff\(/, 'employee directory render
 assert.match(scripts[0][1], /function renderLeaves\(/, 'leave list renderer exists');
 assert.match(scripts[0][1], /function renderTeachers\([\s\S]*?teacherLoadRows/, 'teacher workload is calculated from timetable lessons');
 assert.match(scripts[0][1], /data\.toDate<data\.fromDate/, 'leave date range is validated');
-assert.match(scripts[0][1], /x\.fromDate<=data\.toDate&&data\.fromDate<=x\.toDate/, 'overlapping approved leave requests are rejected');
+assert.match(scripts[0][1], /data\\.fromDate<=x\\.toDate&&x\\.fromDate<=data\\.toDate/, 'overlapping approved leave requests are rejected');
 assert.match(scripts[0][1], /db\.leaves=db\.leaves\.filter\(x=>x\.staffId!==recordId\)/, 'employee deletion clears linked leave requests');
 assert.match(scripts[0][1], /x\.staff=Array\.isArray\(x\.staff\)\?x\.staff:\[\]/, 'legacy browser data gains employee collection');
 assert.match(scripts[0][1], /x\.leaves=Array\.isArray\(x\.leaves\)\?x\.leaves:\[\]/, 'legacy browser data gains leave collection');
