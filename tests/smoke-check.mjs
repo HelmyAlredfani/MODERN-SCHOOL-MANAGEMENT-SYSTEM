@@ -176,11 +176,11 @@ assert.ok(!cardBuilder.includes('persist(')&&!cardBuilder.includes('db.'), 'repo
 assert.ok(scripts[0][1].includes("function exportStudentReportCard()"), 'report card export remains present');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'report card CSV uses UTF-8');
 
-assert.match(serviceWorker, /msms-github-edition-v3/, 'service worker cache version is bumped to invalidate stale site assets');
+assert.match(serviceWorker, /msms-github-edition-v4/, 'service worker cache version is bumped to invalidate stale site assets');
 assert.match(serviceWorker, /request\.mode==='navigate'\|\|url\.pathname\.endsWith\('\/index\.html'\)/, 'page navigations use a network-first strategy');
 assert.match(serviceWorker, /fetch\(request\)[\s\S]*?caches\.match\(request\)[\s\S]*?caches\.match\('\.\/index\.html'\)/, 'page navigation falls back to cached HTML when offline');
 assert.match(serviceWorker, /keys\.filter\(key=>key!==CACHE\)/, 'old service worker caches are removed on activation');
-assert.match(html, /MSMS 2\.7/, 'visible product version is updated to 2.5');
+assert.match(html, /MSMS 2\.8/, 'visible product version is updated to 2.8');
 assert.match(html, /id="academicSubjectRows"/, 'academic subject analytics table exists');
 assert.match(html, /id="academicClassRows"/, 'academic class analytics table exists');
 assert.match(html, /id="academicExamRows"/, 'academic exam analytics table exists');
@@ -192,7 +192,7 @@ assert.ok(scripts[0][1].includes("inRange({date:examMap.get(g.examId).date||''})
 const academicBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function academicPerformanceData(){'),scripts[0][1].indexOf('function renderAcademicPerformance(){'));
 assert.ok(!academicBuilder.includes('persist(')&&!academicBuilder.includes('db.'), 'academic analytics builder is read-only');
 
-assert.match(html, /MSMS 2\.7/, 'visible product version is updated to 2.6');
+assert.match(html, /MSMS 2\.8/, 'visible product version is updated to 2.8');
 assert.match(html, /id="staffReportApprovedRequests"/, 'monthly approved leave request KPI exists');
 assert.match(html, /id="staffReportPendingRequests"/, 'monthly pending leave request KPI exists');
 assert.match(html, /id="staffReportRejectedRequests"/, 'monthly rejected leave request KPI exists');
@@ -207,7 +207,7 @@ assert.ok(scripts[0][1].includes("function exportStaffMonthlyReport()"), 'staff 
 
 
 // MSMS 2.7 – student attendance analytics
-assert.match(html, /MSMS 2\.7/, 'visible product version is updated to 2.7');
+assert.match(html, /MSMS 2\.8/, 'visible product version is updated to 2.8');
 assert.match(html, /id="attendanceAnalyticsClassRows"/, 'class and section attendance comparison exists');
 assert.match(html, /id="studentAttendanceDetailRows"/, 'individual student attendance detail exists');
 assert.match(html, /id="attendanceStudentFilter"/, 'student attendance selector exists');
@@ -221,3 +221,19 @@ assert.ok(scripts[0][1].includes('attendanceRate:observed?(present+late)/observe
 const attendanceBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentAttendanceAnalyticsData(){'),scripts[0][1].indexOf('function renderStudentAttendanceAnalytics(){'));
 assert.ok(!attendanceBuilder.includes('persist(')&&!attendanceBuilder.includes('db.'), 'student attendance analytics builder is read-only and uses active-school scope');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'student attendance CSV uses UTF-8');
+
+
+// MSMS 2.8 – student absence follow-up
+assert.match(html, /MSMS 2\.8/, 'visible product version is updated to 2.8');
+assert.match(html, /id="absenceFollowupRows"/, 'student absence follow-up register exists');
+assert.match(html, /id="absenceFollowupThreshold"/, 'absence follow-up threshold control exists');
+assert.ok(scripts[0][1].includes('function studentAbsenceFollowupData()'), 'student absence follow-up data builder exists');
+assert.ok(scripts[0][1].includes('function renderStudentAbsenceFollowup()'), 'student absence follow-up renderer exists');
+assert.ok(scripts[0][1].includes('function exportStudentAbsenceFollowup()'), 'student absence follow-up CSV export exists');
+assert.ok(scripts[0][1].includes("scoped('attendance').filter(x=>studentMap.has(x.studentId)"), 'absence follow-up is scoped to active-school students');
+assert.ok(scripts[0][1].includes("x.status==='absent'"), 'only unexcused absent status counts toward follow-up');
+assert.ok(scripts[0][1].includes("guardians.get(st.guardianId)"), 'follow-up resolves guardian contact from active-school guardian records');
+assert.ok(scripts[0][1].includes("absences.length>=threshold"), 'follow-up threshold is applied to student absence count');
+const followupBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentAbsenceFollowupData(){'),scripts[0][1].indexOf('function renderStudentAbsenceFollowup(){'));
+assert.ok(!followupBuilder.includes('persist(')&&!followupBuilder.includes('db.'), 'absence follow-up builder is read-only and scoped');
+assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'absence follow-up CSV uses UTF-8');
