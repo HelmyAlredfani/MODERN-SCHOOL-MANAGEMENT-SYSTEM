@@ -83,3 +83,15 @@ assert.match(scripts[0][1], /db\.leaves=db\.leaves\.filter\(x=>x\.staffId!==reco
 assert.match(scripts[0][1], /x\.staff=Array\.isArray\(x\.staff\)\?x\.staff:\[\]/, 'legacy browser data gains employee collection');
 assert.match(scripts[0][1], /x\.leaves=Array\.isArray\(x\.leaves\)\?x\.leaves:\[\]/, 'legacy browser data gains leave collection');
 assert.match(scripts[0][1], /const staffIds=new Set\(x\.staff\.map\(s=>s\.id\)\)/, 'backup leave employee references are validated');
+
+assert.match(html, /id="staff-attendance"/, 'staff attendance section exists');
+assert.match(html, /id="staffAttendanceRows"/, 'staff attendance register exists');
+assert.match(html, /id="staffAttendanceDate"/, 'staff attendance date filter exists');
+assert.match(html, /id="staffPresentCount"/, 'staff attendance summary counters exist');
+assert.match(scripts[0][1], /staffAttendance:\{title:'تسجيل دوام موظف'/, 'staff attendance form exists');
+assert.match(scripts[0][1], /function renderStaffAttendance\(/, 'staff attendance renderer exists');
+assert.match(scripts[0][1], /x\.staffAttendance=Array\.isArray\(x\.staffAttendance\)\?x\.staffAttendance:\[\]/, 'legacy browser data gains staff attendance collection');
+assert.ok(scripts[0][1].includes('x.staffId===data.staffId&&x.date===data.date'), 'duplicate staff attendance is rejected');
+assert.match(scripts[0][1], /a\.checkOut<a\.checkIn/, 'check-out cannot precede check-in');
+assert.match(scripts[0][1], /db\.staffAttendance=db\.staffAttendance\.filter\(x=>x\.staffId!==recordId\)/, 'employee deletion clears linked attendance');
+assert.match(scripts[0][1], /staffAttendance\.some\(a=>!x\.staff\.some/, 'backup staff attendance employee references are validated');
