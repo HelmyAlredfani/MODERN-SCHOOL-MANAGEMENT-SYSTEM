@@ -176,7 +176,7 @@ assert.ok(!cardBuilder.includes('persist(')&&!cardBuilder.includes('db.'), 'repo
 assert.ok(scripts[0][1].includes("function exportStudentReportCard()"), 'report card export remains present');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'report card CSV uses UTF-8');
 
-assert.match(serviceWorker, /msms-github-edition-v2/, 'service worker cache version is bumped to invalidate stale site assets');
+assert.match(serviceWorker, /msms-github-edition-v3/, 'service worker cache version is bumped to invalidate stale site assets');
 assert.match(serviceWorker, /request\.mode==='navigate'\|\|url\.pathname\.endsWith\('\/index\.html'\)/, 'page navigations use a network-first strategy');
 assert.match(serviceWorker, /fetch\(request\)[\s\S]*?caches\.match\(request\)[\s\S]*?caches\.match\('\.\/index\.html'\)/, 'page navigation falls back to cached HTML when offline');
 assert.match(serviceWorker, /keys\.filter\(key=>key!==CACHE\)/, 'old service worker caches are removed on activation');
