@@ -150,8 +150,8 @@ assert.ok(scripts[0][1].includes("scoped('payments').filter(p=>p.studentId===stu
 assert.ok(scripts[0][1].includes("p.studentId===studentId&&inRange(p.date)"), 'receipts use their own payment date range, independently of fee due dates');
 assert.ok(scripts[0][1].includes("f.dueDate&&inRange(f.dueDate)"), 'fee date range uses due date separately');
 assert.ok(scripts[0][1].includes("inRange(p.date)"), 'receipt date range uses receipt date separately');
-assert.ok(scripts[0][1].includes("const billed=fees.reduce"), 'student account calculates assessed total');
-assert.ok(scripts[0][1].includes("const receipts=payments.reduce"), 'student account calculates receipt total');
+assert.ok(scripts[0][1].includes("billed=fees.reduce"), 'student account calculates assessed total');
+assert.ok(scripts[0][1].includes("receipts=payments.reduce"), 'student account calculates receipt total');
 assert.ok(scripts[0][1].includes('function exportStudentAccount()'), 'student account CSV export exists');
 assert.ok(scripts[0][1].includes('function printStudentAccount()'), 'student account print view exists');
 const accountBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentAccountData(){'),scripts[0][1].indexOf('function renderStudentAccount(){'));
