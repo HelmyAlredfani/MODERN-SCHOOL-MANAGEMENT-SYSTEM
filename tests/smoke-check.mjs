@@ -118,3 +118,14 @@ assert.ok(scripts[0][1].includes("f.dueDate&&f.dueDate<today()"), 'overdue fee b
 assert.ok(scripts[0][1].includes('function exportFinanceMonthlyReport()'), 'monthly finance CSV export exists');
 assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'finance CSV uses UTF-8 encoding');
 assert.ok(scripts[0][1].includes("renderFinanceMonthlyReport()"), 'finance report refreshes with report screen');
+
+assert.match(html, /id="paymentRows"/, 'payment receipt register exists');
+assert.match(html, /onclick="openForm\('payment'\)"/, 'new payment receipt action exists');
+assert.ok(scripts[0][1].includes("payments:[],lessons:[]"), 'new datasets include payment transactions');
+assert.ok(scripts[0][1].includes("x.payments=Array.isArray(x.payments)?x.payments:[]"), 'legacy local storage migrates to payments array');
+assert.ok(scripts[0][1].includes("function exportFinanceMonthlyReport()"), 'finance report export remains available');
+assert.ok(scripts[0][1].includes("scoped('payments').filter(p=>p.date>=start&&p.date<=end)"), 'monthly finance report filters actual receipts by payment date');
+assert.ok(scripts[0][1].includes("newFee.paid=Number(newFee.paid)+Number(data.amount)"), 'receipt save updates fee paid balance');
+assert.ok(scripts[0][1].includes("fee.paid=Math.max(0,Number(fee.paid)-Number(removed.amount))"), 'receipt deletion reverses fee paid balance');
+assert.ok(scripts[0][1].includes('f.id===p.feeId&&f.schoolId===p.schoolId&&f.studentId===p.studentId'), 'payment references are validated against fee, school and student');
+assert.ok(scripts[0][1].includes("x.payments=Array.isArray(x.payments)?x.payments:[]"), 'legacy backups gain empty payments array');
