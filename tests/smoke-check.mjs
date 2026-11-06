@@ -95,3 +95,14 @@ assert.ok(scripts[0][1].includes('x.staffId===data.staffId&&x.date===data.date')
 assert.match(scripts[0][1], /a\.checkOut<a\.checkIn/, 'check-out cannot precede check-in');
 assert.match(scripts[0][1], /db\.staffAttendance=db\.staffAttendance\.filter\(x=>x\.staffId!==recordId\)/, 'employee deletion clears linked attendance');
 assert.match(scripts[0][1], /staffAttendance\.some\(a=>!x\.staff\.some/, 'backup staff attendance employee references are validated');
+
+assert.match(html, /id="staffReportMonth"/, 'monthly staff report month selector exists');
+assert.match(html, /id="staffMonthlyRows"/, 'monthly staff breakdown table exists');
+assert.match(html, /id="monthlyTeacherLoadRows"/, 'monthly teacher workload table exists');
+assert.match(html, /id="staffReportLeaveDays"/, 'approved leave day summary exists');
+assert.ok(scripts[0][1].includes('function staffMonthlyData()'), 'monthly HR report data builder exists');
+assert.ok(scripts[0][1].includes("scoped('staffAttendance').filter(x=>x.date>=start&&x.date<=end)"), 'staff attendance is scoped to selected month and school');
+assert.ok(scripts[0][1].includes("x.status==='موافق عليها'&&x.toDate>=start&&x.fromDate<=end"), 'approved leave overlapping selected month is included');
+assert.ok(scripts[0][1].includes('function exportStaffMonthlyReport()'), 'monthly CSV export exists');
+assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'CSV export uses UTF-8');
+assert.ok(scripts[0][1].includes("String(new Date(year,mon,0).getDate()).padStart(2,'0')"), 'month end date avoids UTC timezone shifts');
