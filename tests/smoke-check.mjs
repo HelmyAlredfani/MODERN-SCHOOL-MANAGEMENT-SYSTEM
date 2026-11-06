@@ -147,11 +147,11 @@ assert.match(html, /id="accountPaymentRows"/, 'student receipt history table exi
 assert.match(scripts[0][1], /function studentAccountData\(/, 'student account data builder exists');
 assert.ok(scripts[0][1].includes("scoped('fees').filter(f=>f.studentId===studentId"), 'student fees are restricted to active school and selected student');
 assert.ok(scripts[0][1].includes("scoped('payments').filter(p=>p.studentId===studentId"), 'receipts are restricted to active school and selected student');
-assert.ok(scripts[0][1].includes("feeIds.has(p.feeId)"), 'receipts must link to the selected student fee rows');
+assert.ok(scripts[0][1].includes("p.studentId===studentId&&inRange(p.date)"), 'receipts use their own payment date range, independently of fee due dates');
 assert.ok(scripts[0][1].includes("f.dueDate&&inRange(f.dueDate)"), 'fee date range uses due date separately');
 assert.ok(scripts[0][1].includes("inRange(p.date)"), 'receipt date range uses receipt date separately');
 assert.ok(scripts[0][1].includes("const billed=fees.reduce"), 'student account calculates assessed total');
 assert.ok(scripts[0][1].includes("const receipts=payments.reduce"), 'student account calculates receipt total');
 assert.ok(scripts[0][1].includes('function exportStudentAccount()'), 'student account CSV export exists');
 assert.ok(scripts[0][1].includes('function printStudentAccount()'), 'student account print view exists');
-assert.ok(scripts[0][1].includes('function studentAccountData(){') && !scripts[0][1].includes('studentAccountData(){db.'), 'student account report is read-only');
+const accountBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentAccountData(){'),scripts[0][1].indexOf('function renderStudentAccount(){'));\nassert.doesNotMatch(accountBuilder, /\\b(?:db|persist)\\s*(?:\\.|=)/, 'student account data builder does not mutate stored records');
