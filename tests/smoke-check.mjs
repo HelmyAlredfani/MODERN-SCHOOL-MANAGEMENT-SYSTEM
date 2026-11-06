@@ -137,4 +137,4 @@ assert.ok(scripts[0][1].includes("data.receiptNo=old?.receiptNo||'MSMS-'"), 'new
 assert.ok(scripts[0][1].includes("p.receiptNo='MSMS-'+String(p.date||'').replace"), 'legacy receipt numbers are generated during local migration');
 assert.ok(scripts[0][1].includes("if(!p.receiptNo||!x.fees.some"), 'backup receipts require a receipt number and valid fee link');
 assert.ok(scripts[0][1].includes("n.receiptNo===p.receiptNo"), 'duplicate receipt numbers within a school are rejected on import');
-assert.ok(scripts[0][1].includes("financePaymentRows").includes ? true : true, 'monthly receipt report is present');
+assert.match(html, /id="financePaymentRows"/, 'monthly receipt report is present');
