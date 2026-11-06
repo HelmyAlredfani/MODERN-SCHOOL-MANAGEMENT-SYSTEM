@@ -171,3 +171,5 @@ assert.ok(scripts[0][1].includes('function exportStudentReportCard()'), 'report 
 assert.ok(scripts[0][1].includes('function printStudentReportCard()'), 'report card print view exists');
 const cardBuilder=scripts[0][1].slice(scripts[0][1].indexOf('function studentReportCardData(){'),scripts[0][1].indexOf('function renderStudentReportCard(){'));
 assert.ok(!cardBuilder.includes('persist(')&&!cardBuilder.includes('db.'), 'report card data builder is read-only');
+assert.ok(scripts[0][1].includes("function exportStudentReportCard()"), 'report card export remains present');
+assert.ok(scripts[0][1].includes("type:'text/csv;charset=utf-8'"), 'report card CSV uses UTF-8');
