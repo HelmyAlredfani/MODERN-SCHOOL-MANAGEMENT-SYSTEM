@@ -138,3 +138,20 @@ assert.ok(scripts[0][1].includes("p.receiptNo='MSMS-'+String(p.date||'').replace
 assert.ok(scripts[0][1].includes('if(x.payments.some(p=>!p.receiptNo'), 'backup receipts require a receipt number and valid fee link');
 assert.ok(scripts[0][1].includes("n.receiptNo===p.receiptNo"), 'duplicate receipt numbers within a school are rejected on import');
 assert.match(html, /id="financePaymentRows"/, 'monthly receipt report is present');
+
+
+assert.match(html, /id="student-account"/, 'individual student account section exists');
+assert.match(html, /id="accountStudent"/, 'student account selector exists');
+assert.match(html, /id="accountFeeRows"/, 'student fee statement table exists');
+assert.match(html, /id="accountPaymentRows"/, 'student receipt history table exists');
+assert.match(scripts[0][1], /function studentAccountData\(/, 'student account data builder exists');
+assert.ok(scripts[0][1].includes("scoped('fees').filter(f=>f.studentId===studentId"), 'student fees are restricted to active school and selected student');
+assert.ok(scripts[0][1].includes("scoped('payments').filter(p=>p.studentId===studentId"), 'receipts are restricted to active school and selected student');
+assert.ok(scripts[0][1].includes("feeIds.has(p.feeId)"), 'receipts must link to the selected student fee rows');
+assert.ok(scripts[0][1].includes("f.dueDate&&inRange(f.dueDate)"), 'fee date range uses due date separately');
+assert.ok(scripts[0][1].includes("inRange(p.date)"), 'receipt date range uses receipt date separately');
+assert.ok(scripts[0][1].includes("const billed=fees.reduce"), 'student account calculates assessed total');
+assert.ok(scripts[0][1].includes("const receipts=payments.reduce"), 'student account calculates receipt total');
+assert.ok(scripts[0][1].includes('function exportStudentAccount()'), 'student account CSV export exists');
+assert.ok(scripts[0][1].includes('function printStudentAccount()'), 'student account print view exists');
+assert.ok(scripts[0][1].includes('function studentAccountData(){') && !scripts[0][1].includes('studentAccountData(){db.'), 'student account report is read-only');
