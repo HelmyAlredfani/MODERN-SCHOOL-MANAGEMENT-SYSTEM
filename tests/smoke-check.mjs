@@ -127,5 +127,5 @@ assert.ok(scripts[0][1].includes("function exportFinanceMonthlyReport()"), 'fina
 assert.ok(scripts[0][1].includes("scoped('payments').filter(p=>p.date>=start&&p.date<=end)"), 'monthly finance report filters actual receipts by payment date');
 assert.ok(scripts[0][1].includes("newFee.paid=Number(newFee.paid)+Number(data.amount)"), 'receipt save updates fee paid balance');
 assert.ok(scripts[0][1].includes("fee.paid=Math.max(0,Number(fee.paid)-Number(removed.amount))"), 'receipt deletion reverses fee paid balance');
-assert.ok(scripts[0][1].includes("p.feeId===f.id&&f.schoolId===p.schoolId&&f.studentId===p.studentId"), 'payment references are validated against fee, school and student');
+assert.ok(scripts[0][1].includes('f.id===p.feeId&&f.schoolId===p.schoolId&&f.studentId===p.studentId'), 'payment references are validated against fee, school and student');
 assert.ok(scripts[0][1].includes("x.payments=Array.isArray(x.payments)?x.payments:[]"), 'legacy backups gain empty payments array');
