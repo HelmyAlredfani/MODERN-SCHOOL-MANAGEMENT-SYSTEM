@@ -61,3 +61,9 @@ assert.match(html, /id="reportClassAttendanceRows"/, 'class attendance report ta
 assert.match(scripts[0][1], /function renderAttendance\(\)[\s\S]*?st\.classId===filter\.value/, 'attendance renderer filters students by selected class');
 assert.match(scripts[0][1], /function renderReports\(\)[\s\S]*?const classGroups=new Map\(\)/, 'reports aggregate attendance by class');
 assert.match(scripts[0][1], /g\.present\+g\.late/, 'attendance rate includes present and late statuses');
+
+assert.match(html, /id="weeklyTimetableGrid"/, 'weekly timetable grid exists');
+assert.match(html, /id="timetableClassFilter"/, 'weekly timetable can be filtered by class');
+assert.match(scripts[0][1], /function renderWeeklyTimetable\(/, 'weekly timetable renderer exists');
+assert.match(scripts[0][1], /days=\['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'\]/, 'weekly timetable includes the school week');
+assert.match(scripts[0][1], /lessons\.filter\(l=>l\.day===day&&String\(l\.period\)===p\)/, 'weekly timetable groups lessons by day and period');
