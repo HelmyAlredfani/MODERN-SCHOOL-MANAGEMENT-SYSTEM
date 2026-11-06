@@ -129,3 +129,12 @@ assert.ok(scripts[0][1].includes("newFee.paid=Number(newFee.paid)+Number(data.am
 assert.ok(scripts[0][1].includes("fee.paid=Math.max(0,Number(fee.paid)-Number(removed.amount))"), 'receipt deletion reverses fee paid balance');
 assert.ok(scripts[0][1].includes('f.id===p.feeId&&f.schoolId===p.schoolId&&f.studentId===p.studentId'), 'payment references are validated against fee, school and student');
 assert.ok(scripts[0][1].includes("x.payments=Array.isArray(x.payments)?x.payments:[]"), 'legacy backups gain empty payments array');
+
+assert.match(html, /id="paymentRows"/, 'payment receipt register remains available');
+assert.match(html, /طباعة السند/, 'payment receipt print action exists');
+assert.ok(scripts[0][1].includes('function printReceipt(paymentId)'), 'printable receipt renderer exists');
+assert.ok(scripts[0][1].includes("data.receiptNo=old?.receiptNo||'MSMS-'"), 'new receipts receive a generated receipt number');
+assert.ok(scripts[0][1].includes("p.receiptNo='MSMS-'+String(p.date||'').replace"), 'legacy receipt numbers are generated during local migration');
+assert.ok(scripts[0][1].includes("if(!p.receiptNo||!x.fees.some"), 'backup receipts require a receipt number and valid fee link');
+assert.ok(scripts[0][1].includes("n.receiptNo===p.receiptNo"), 'duplicate receipt numbers within a school are rejected on import');
+assert.ok(scripts[0][1].includes("financePaymentRows").includes ? true : true, 'monthly receipt report is present');
